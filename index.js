@@ -6,7 +6,7 @@
 // let linkedList = "whana" // use name of starting node
 
 function getName(node) {
-  return node["name"];
+  return node.name;
 }
 
 function headNode(firstAddress, collection) {
@@ -14,7 +14,7 @@ function headNode(firstAddress, collection) {
 }
 
 function next(node, collection) {
-  const nextNode = node["next"];
+  const nextNode = node.next;
   return collection[nextNode];
 }
 
@@ -29,7 +29,7 @@ function nodeAt(index, firstAddress, collection) {
 function addressAt(index, firstAddress, collection) {
   let address = firstAddress;
   for (let i = 0; i <= index - 1; i++) {
-    address = collection[address]["next"];
+    address = collection[address].next;
   }
   return address;
 }
@@ -39,7 +39,7 @@ function indexAt(node, collection, firstAddress) {
     index = 0,
     found = false;
 
-  while (!found && nodeToCheck["next"]) {
+  while (!found && nodeToCheck.next) {
     if (nodeToCheck === node) {
       found = true;
     } else {
@@ -51,15 +51,20 @@ function indexAt(node, collection, firstAddress) {
 }
 
 function insertNodeAt(index, newAddress, firstAddress, collection) {
-  const prevNode = nodeAt(index - 1, firstAddress, collection);
+  const currentNodeAddress = addressAt(index, firstAddress, collection);
 
-  collection[newAddress]["next"] = prevNode["next"];
+  if (index > 0) {
+    // prev node points to new node
+    const prevNode = nodeAt(index - 1, firstAddress, collection);
+    prevNode.next = newAddress;
+  }
 
-  prevNode["next"] = newAddress;
+  // new node points to whatever it's inserted before
+  collection[newAddress].next = currentNodeAddress;
 }
 
 function deleteNodeAt(index, firstAddress, collection) {
   const prevNode = nodeAt(index - 1, firstAddress, collection);
   const nodeToDelete = nodeAt(index, firstAddress, collection);
-  prevNode["next"] = nodeToDelete["next"];
+  prevNode.next = nodeToDelete.next;
 }
